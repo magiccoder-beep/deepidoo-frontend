@@ -1,0 +1,30 @@
+.table-users {
+  @media (max-width: 992px) {
+    th {
+      display: none;
+    }
+    tr, td {
+      display: block;
+    }
+    tr {
+      margin-bottom: 20px;
+    }
+    td {
+      max-width: 100%;
+    }
+  }
+  @media (min-width: 993px) {
+    th {
+      display: table-cell;
+    }
+    th:nth-child(1) {
+      width: 80px;
+    }
+    th:nth-child(2) {
+      width: 150px;
+    }
+    th:nth-child(3) {
+      width: 100px;
+    }
+  }
+}

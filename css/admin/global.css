@@ -1,0 +1,117 @@
+/* INFORMATIVE PURPOSE ONLY */
+/* Anyway those values will be overridden in the <body style... tag on the fly  */
+/* Used as a reference for variable names, nothing more */
+:root {
+  --primary:#006876;
+  --on-primary:#ffffff;
+  --primary-container:#a1efff;
+  --on-primary-container:#001f25;
+  --secondary:#4a6268;
+  --on-secondary:#ffffff;
+  --secondary-container:#cde7ed;
+  --on-secondary-container:#051f23;
+  --tertiary:#545d7e;
+  --on-tertiary:#ffffff;
+  --tertiary-container:#dbe1ff;
+  --on-tertiary-container:#101a37;
+  --error:#ba1a1a;
+  --on-error:#ffffff;
+  --error-container:#ffdad6;
+  --on-error-container:#410002;
+  --background:#fbfcfd;
+  --on-background:#191c1d;
+  --surface:#f8fafa;
+  --on-surface:#191c1d;
+  --surface-variant:#dbe4e6;
+  --on-surface-variant:#3f484a;
+  --outline:#6f797b;
+  --outline-variant:#bfc8ca;
+  --shadow:#000000;
+  --scrim:#000000;
+  --inverse-surface:#2e3132;
+  --inverse-on-surface:#eff1f2;
+  --inverse-primary:#44d8f1;
+  --surface-dim:#d8dadb;
+  --surface-bright:#f8fafa;
+  --surface-container-lowest:#ffffff;
+  --surface-container-low:#f2f4f4;
+  --surface-container:#eceeef;
+  --surface-container-high:#e6e8e9;
+  --surface-container-highest:#e1e3e3;
+  --success: #02eb25;
+}
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+body {
+  min-width: 375px; /* Iphone SE */
+}
+table.stripes tbody tr:hover {
+  background: var(--surface-container-highest) !important;
+}
+
+.hidden {
+  display: none;
+}
+.responsive.max.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  li {    
+    border: 1px solid var(--outline-variant);
+    border-right: 0;
+    padding: 4px 10px;
+    &:empty {
+      display: none;
+    }
+    &:last-child {
+      border-right: 1px solid var(--outline-variant);
+    }
+    a {
+      color: var(--primary);
+      font-weight: bolder;
+    }
+    &.active {
+      background-color: var(--primary);
+      color: var(--inverse-primary);
+    }
+  }
+}
+ul.breadcrumb {
+  list-style-type: none;
+  margin-bottom: 20px;
+  li {
+    display: inline-block;
+    a {
+      color: var(--primary);
+    }
+    a:after {
+      padding-left: 5px;
+      padding-right: 5px;
+      content: '/'
+    }
+  }
+}
+.content {
+  background-color: var(--on-primary);
+  padding: 20px;
+  box-shadow: 1px;
+  box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.2);
+}
+article {
+  ul.list {
+    margin: 0 0 auto 10px;
+    padding: 0;
+  }
+}
+a.cross {
+  color: var(--error);
+  text-decoration: none !important;
+  &:after {
+    content: '×';
+  }
+}

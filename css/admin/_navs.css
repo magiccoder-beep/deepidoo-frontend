@@ -1,0 +1,20 @@
+.main-menu.right {
+  border-radius: 0;
+  button {
+    float: right !important;
+    margin: -3px auto auto -1px;
+  }
+  ul {
+    padding: 0;
+    margin-top: 50px;
+    list-style-type: none;
+    li a {
+      display: block;
+      padding: 10px;
+      border-bottom: 1px solid var(--outline-variant);
+      &:hover {
+        background-color: var(--outline-variant);
+      }
+    }
+  }
+}

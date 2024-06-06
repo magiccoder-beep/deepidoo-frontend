@@ -1,0 +1,7 @@
+.hidden {
+  display: none;
+}
+input {
+  margin-bottom: 20px;
+  width: 100%;
+}
