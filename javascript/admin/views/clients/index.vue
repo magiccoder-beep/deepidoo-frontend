@@ -1,40 +1,41 @@
 <template>
-  <div class="main_container">
+  <main class="responsive max">
     <nav-top></nav-top>
 
-    <div class="clients" role="main">
-      <div class="col-xs-24">
-        <ul class="breadcrumb pull-left">
-          <li>
-            <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
-          </li>
-          <li>{{ $t('top_nav.clients') }}</li>
-        </ul>
-        <div class="pull-right">
-          <router-link :to="'/clients/new'" class="add-link">+ {{ $t('clients.new') }}</router-link>
+    <div class="grid">
+      <div class="s12">
+        <div class="w-full">
+          <ul class="breadcrumb pull-left">
+            <li>
+              <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
+            </li>
+            <li>{{ $t('top_nav.clients') }}</li>
+          </ul>
+          <div class="pull-right">
+            <router-link :to="'/clients/new'" class="add-link">+ {{ $t('clients.new') }}</router-link>
+          </div>
         </div>
-      </div>
 
-      <filters :pagination="pagination"></filters>
+        <ClientFilters :pagination="store.pagination"></ClientFilters>
 
-      <div class="col-xs-24 overflowable">
-        <table class="table table-striped table-thin">
+        <table class="stripes table table-striped">
           <thead>
             <tr>
-              <th style="width: 70px;">{{ $t('ref') }}</th>
-              <th style="width: 110px;">{{ $t('created_at') }}</th>
+              <th>{{ $t('ref') }}</th>
+              <th>{{ $t('created_at') }}</th>
               <th>{{ $t('name') }}</th>
-              <th style="width: 200px">Marque</th>
+              <th>Marque</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="client in clients" :key="client.id">
+            <tr v-for="client in store.clients" :key="client.id">
               <td>
-                <router-link :to="'/clients/' + client.id ">{{ client.id }}</router-link>
+                <router-link :to="'/clients/' + client.id" class="link">{{ client.id }}</router-link>
               </td>
               <td>{{ client.created_at }}</td>
               <td>
-                <router-link :to="'/clients/' + client.id ">{{ client.name }}</router-link>
+                <router-link :to="'/clients/' + client.id" class="link">{{ client.name }}</router-link>
               </td>
               <td>
                 {{ client.brand }}
@@ -45,30 +46,29 @@
             </tr>
           </tbody>
         </table>
+        <SharedPagination v-if="store.pagination" :store="store" @clicked="load" />
       </div>
-      <pagination :pagination="pagination"></pagination>
     </div>
 
     <footer-custom></footer-custom>
-  </div>
+  </main>
 </template>
 
-<script>
-import Pagination from "../shared/_pagination.vue";
-import filters from "./_filters.vue";
+<script setup>
 
-export default {
-  components: {
-    Pagination,
-    filters
-  },
+import ClientFilters from "./_filters.vue";
+import SharedPagination from "../shared/_pagination.vue";
+import { ClientStore } from "../../stores/client";
 
-  data: function() {
-    return this.$store.state.ClientStore;
-  },
+const store = ClientStore();
+const location = useRoute();
 
-  mounted: function() {
-    this.$store.dispatch("ClientStore/index", this.$route.fullPath);
-  }
+const load = function () {
+  store.index(location.fullPath);
 };
+
+onMounted(() => {
+  load();
+});
+
 </script>

@@ -1,6 +1,6 @@
 import helpers from '../../helpers';
 
-const ContactStore = {
+const ContactStore1 = {
   namespaced: true,
   state: {
     progress: '',
@@ -30,7 +30,7 @@ const ContactStore = {
       state.contact = data.contact;
       state.phone.setCountry('fr');
       state.phone.setNumber(data.contact.phone);
-       
+
       return state;
     },
     many(state, data) {
@@ -84,12 +84,12 @@ const ContactStore = {
       });
     },
     autocomplete(context, args) {
-      if(window.Global.timer != null) {
+      if (window.Global.timer != null) {
         clearTimeout(window.Global.timer);
-      } 
+      }
 
-      if(args.keywords.length > 1) {
-        window.Global.timer = window.setTimeout(function() {
+      if (args.keywords.length > 1) {
+        window.Global.timer = window.setTimeout(function () {
           window.Global.timer = null;
 
           $.ajax({
@@ -101,17 +101,17 @@ const ContactStore = {
               scope: args.scope,
               client_id: args.client_id
             },
-            success: function(data) {
+            success: function (data) {
               context.commit("setContactables", data);
             }
           });
-        }, 200); 
+        }, 200);
       } else {
-        if(args.what == 'contacts') {
-          context.commit("setContacts", {results: []});
+        if (args.what == 'contacts') {
+          context.commit("setContacts", { results: [] });
         } else {
-          context.commit("setContactables", {results: []});
-        } 
+          context.commit("setContactables", { results: [] });
+        }
       }
     },
     create(context, form) {

@@ -1,106 +1,81 @@
 <template>
-  <div class="row">
-    <div class="col-xs-24">
-      <div class="col-xs-24 col-md-12">
-        <div class="form-group">
-          <label>Prénom*</label>
-          <span class="error">{{ errors.firstname }}</span>
-          <input type="text" v-model="contact.firstname" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Nom</label>
-          <span class="error">{{ errors.lastname }}</span>
-          <input type="text" v-model="contact.lastname" class="form-control" />
-        </div>
-        <div class="form-group" style="height: 100px">
-          <label>Rattaché à...</label>
-          <span class="error">{{ errors.contactable_target }}</span>
-          <div class="clearfix"></div>
-          <div style="float: left;width: 20%">
-            <select class="form-control" v-model="contact.contactable_type" @change="resetContactable">              
-              <option value="Client">Client</option> 
-              <option value="Site">Site</option> 
-              <option value="">Autre</option>                          
-            </select>
-          </div>
-          <div style="float: right; width:75%">
-            <input type="text" class="hidden" v-model="contact.contactable_id" />
-            <input type="text" class="form-control" v-model="contact.contactable_name" @keyup="autocompleteContactable" />
-            <div class="autocomplete">
-              <ul v-click-outside="clearContactables">      
-                <li v-for="contactable in contactables" :key="contactable.id"><a href="#" @click.prevent="pickContactable(contactable)">{{ contactable.name }}</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+  <div class="grid responsive">
+    <div class="s6 l6">
+      <div class="field label border">
+        <input type="text" v-model="store.contact.firstname" />
+        <label>Prénom*</label>
+        <SharedErrors attr="firstname" :messages="store.errors" />
+      </div>
+      <div class="field label border">
+        <select v-model="store.contact.contactable_type" @change="resetContactable">
+          <option value="Client">Client</option>
+          <option value="Site">Site</option>
+          <option value="">Autre</option>
+        </select>
+        <label>Rattaché à...</label>
+        <SharedErrors attr="contactable_type" :messages="store.errors" />
+      </div>
+      <div class="field border">
+        <input type="text" class="hidden" v-model="store.contact.contactable_id" />
+      </div>
 
-        <a v-if="contact.id != null" href="#" @click="destroy" class="btn btn-danger">Supprimer</a>
+      <div class="field border">
+        <input type="text" v-model="store.contact.contactable_name" @keyup="autoCompleteContactable" />
+        <ul class="breadcrumb" v-click-outside="clearContactables">
+          <li v-for="contactable in store.contactables" :key="store.contactable.id"><a href="#"
+              @click.prevent="pickContactable(contactable)">{{ contactable.name }}</a></li>
+        </ul>
       </div>
-      <div class="col-xs-24 col-md-12">
-        <div class="form-group">
-          <label>Email</label>
-          <span class="error">{{ errors.email_or_phone }}</span>
-          <input type="text" v-model="contact.email" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Téléphone</label>
-          <input type="text" class="form-control" ref="phone" @blur="setPhone" />
-        </div>
-        <div class="form-group">
-          <label>Notes</label>
-          <span class="error">{{ errors.notes }}</span>
-          <textarea v-model="contact.notes" class="form-control" />
-        </div>
-        
-        <input type="submit" :class="'btn btn-warning pull-right ' + progress" :value="$t('save')" />
-      </div>
+
     </div>
 
+    <div class="s6 l6">
+      <div class="field label border">
+        <input type="text" v-model="store.contact.lastname" />
+        <label>Nom</label>
+        <SharedErrors attr="lastname" :messages="store.errors" />
+      </div>
+      <div class="field label border">
+        <input type="text" v-model="store.contact.email" />
+        <label>Email</label>
+        <SharedErrors attr="email" :messages="store.errors" />
+      </div>
+      <div class="field label border">
+        <input type="text" v-model="store.contact.phone" ref="phone" @blur="setPhone" />
+        <label>Téléphone</label>
+        <SharedErrors attr="phone" :messages="store.errors" />
+      </div>
+      <div class="field label border">
+        <textarea v-model="store.contact.notes"></textarea>
+        <label>Notes</label>
+        <SharedErrors attr="notes" :messages="store.errors" />
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import SharedErrors from '@/javascript/admin/views/shared/_errors.vue';
+import { ContactStore } from '../../stores/contact';
 
-export default {
-  data: function() {
-    return this.$store.state.ContactStore;
-  },
+const store = ContactStore();
 
-  mounted: function() {
-    this.$store.commit('ContactStore/initPhone', this.$refs['phone'])
-  },
-
-  methods: {
-    setPhone: function() {
-      this.$store.commit("ContactStore/setPhone");
-    },
-    autocompleteContactable: function() {
-      this.$store.dispatch("ContactStore/autocomplete", {
-        keywords: this.contact.contactable_name,
-        what: 'contactables',
-        scope: this.contact.contactable_type,
-        client_id: this.client
-      })
-    },
-    clearContactables: function(what) {
-      this.$store.commit("ContactStore/setContactables", {results: []});
-    },
-    pickContactable: function(contactable) {
-      this.$store.commit("ContactStore/setContactable", contactable); 
-      this.$store.commit("ContactStore/setContactables", {results: []});
-    },
-    resetContactable: function() {
-      this.$store.commit("ContactStore/setContactable", {id: null, name: ''}); 
-    },
-    destroy: function() {
-      if(confirm("Êtes vous sur ?!")) {
-        this.$store.dispatch('ContactStore/destroy').then(resolve => {
-          this.$router.push('/contacts'); 
-        }).catch(reject => {
-          alert("An error has occured");
-        });
-      }
-    }
-  }
+const setPhone = function () {
+  store.setPhone();
 };
+
+const autoCompleteContactable = function () {
+  store.autoComplete({ keywords: args.contact.contactable_name, what: "store.contactables", scope: args.contact.contactable_type, client_id: args.client });
+};
+
+const clearContactables = function () {
+  store.setContactable({ results: [] });
+};
+const pickContactable = function (contactables) {
+  store.setContactable(contactables);
+};
+const resetContactable = function () {
+  store.setContactable({ id: null, name: '' });
+};
+
 </script>

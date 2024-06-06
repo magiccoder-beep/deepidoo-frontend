@@ -1,6 +1,6 @@
 import helpers from '../../helpers';
 
-const ClientStore = {
+const ClientStore1 = {
   namespaced: true,
   state: {
     progress: '',
@@ -34,7 +34,7 @@ const ClientStore = {
       state.fallbacks = data.fallbacks;
       state.organisations = data.organisations;
       state.brands = data.brands;
-      
+
       return state;
     },
     many(state, data) {
@@ -48,12 +48,12 @@ const ClientStore = {
     }
   },
   actions: {
-    initApi(context, id){
+    initApi(context, id) {
       return new Promise((resolve, reject) => {
         $.ajax({
           url: `/clients/${id}/init_api`,
           type: 'post',
-          data: {id: context.id},
+          data: { id: context.id },
           success: function (data) {
             // context.commit('many', data);
             resolve(true);

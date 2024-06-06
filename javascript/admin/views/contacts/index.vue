@@ -1,69 +1,70 @@
 <template>
-  <div class="main_container">
+  <main class="responsive max">
     <nav-top></nav-top>
 
-    <div class="clients" role="main">
-      <div class="col-xs-24">
-        <ul class="breadcrumb pull-left">
-          <li>
-            <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
-          </li>
-          <li>Contacts</li>
-        </ul>
-        <div class="pull-right">
-          <router-link :to="'/contacts/new'" class="add-link">+ Nouveau contact</router-link>
+    <div class="grid">
+      <div class="s12">
+        <div class="w-full">
+          <ul class="breadcrumb flex justify-start">
+            <li class="mr-2">
+              <router-link :to="'/'" class="text-blue-500 hover:underline">{{ $t('top_nav.admin_title') }}</router-link>
+            </li>
+            <li class="text-gray-600">Contacts</li>
+          </ul>
+          <div class="flex justify-end">
+            <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">+ Nouveau
+              contact</router-link>
+          </div>
         </div>
-      </div>
 
-      <filters :pagination="pagination"></filters>
+        <ContactsFilters :pagination="store.pagination"></ContactsFilters>
 
-      <div class="col-xs-24 overflowable">
-        <table class="table table-striped table-thin">
+
+        <table class="stripes table table-striped">
           <thead>
             <tr>
-              <th>Nom</th>
-              <th style="width: 350px;">Entité</th>
-              <th style="width: 220px;">Email</th>
-              <th style="width: 220px;">Téléphone</th>  
-              <th style="width: 110px;">{{ $t('created_at') }}</th>
-              <th style="width: 110px;">{{ $t('updated_at') }}</th>            
+              <th>{{ $t('name') }}</th>
+              <th>{{ $t('Entity') }}</th>
+              <th>{{ $t('users.email') }}</th>
+              <th>{{ $t('users.phone') }}</th>
+              <th>{{ $t('created_at') }}</th>
+              <th>{{ $t('updated_at') }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="contact in contacts" :key="contact.id">
-              <td><router-link :to="'/contacts/' + contact.id ">{{ contact.firstname }} {{ contact.lastname }}</router-link></td>
+            <tr v-for="contact in store.contacts" :key="contact.id">
+              <td><router-link :to="'/contacts/' + contact.id" class="link">{{ contact.firstname }} {{ contact.lastname
+                  }}</router-link></td>
               <td>{{ contact.entity }}</td>
               <td>{{ contact.email }}</td>
               <td>{{ contact.phone }}</td>
-              <td><router-link :to="'/contacts/' + contact.id ">{{ contact.created_at }}</router-link></td>
-              <td><router-link :to="'/contacts/' + contact.id ">{{ contact.updated_at }}</router-link></td>
+              <td><router-link :to="'/contacts/' + contact.id" class="link">{{ contact.created_at }}</router-link></td>
+              <td><router-link :to="'/contacts/' + contact.id" class="link">{{ contact.updated_at }}</router-link></td>
             </tr>
           </tbody>
         </table>
-      </div>
-      <pagination :pagination="pagination"></pagination>
-    </div>
 
+        <SharedPagination v-if="store.pagination" :store="store" @clicked="load" />
+      </div>
+    </div>
     <footer-custom></footer-custom>
-  </div>
+  </main>
 </template>
 
-<script>
-import Pagination from "../shared/_pagination.vue";
-import filters from "./_filters.vue";
+<script setup>
+import ContactsFilters from "./_filters.vue";
+import SharedPagination from "../shared/_pagination.vue";
+import { ContactStore } from "../../stores/contact";
 
-export default {
-  components: {
-    Pagination,
-    filters
-  },
+const store = ContactStore();
+const location = useRoute();
 
-  data: function() {
-    return this.$store.state.ContactStore;
-  },
+const load = function () {
+  store.index(location.fullPath);
+}
 
-  mounted: function() {
-    this.$store.dispatch("ContactStore/index", this.$route.fullPath);
-  }
-};
+onMounted(() => {
+  load();
+}
+);
 </script>
