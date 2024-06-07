@@ -9,9 +9,9 @@
               <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
             </li>
             <li>
-              <router-link :to="'/contacts'">Contacts</router-link>
+              <router-link :to="'/contacts'">{{ interfaceStrings.contact }}</router-link>
             </li>
-            <li>Nouveau contact</li>
+            <li>{{ interfaceStrings.newContact }}</li>
           </ul>
         </div>
         <div class="s12 l6">
@@ -28,16 +28,19 @@
 
 <script setup>
 import ContactForm from "./_form.vue";
-import { ContactStore } from "../../stores/contact";
 import router from "../../routes";
+import { ContactStore } from "../../stores/contact";
+import { messages } from "../../../const/const";
 
 const store = ContactStore();
 
+const interfaceStrings = messages.interfaceStrings;
+
 const create = function () {
   store.create().then(resolve => {
-    router.push('/contacts')
+    router.push(`/${messages.contacts.prefix}/` + resolve.data.contact.id);
   }).catch(reject => {
-    alert("An error has occured");
+    alert(messages.errorOccured);
   });
 };
 

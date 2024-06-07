@@ -1,33 +1,50 @@
 <template>
 
-  <div class="grid responsive">
+  <div class="grid responsive max">
     <div class="s6 l6">
       <div class="field label border">
         <SharedErrors attr="name" :messages="store.errors" />
         <input type="text" v-if="store.client" v-model="store.client.name" />
-        <label>Nom*</label>
+        <label>
+          {{ $t('name') }}
+        </label>
         <input type="text" v-if="!store.client" />
       </div>
       <div class="field label border">
         <select v-if="store.client.id == null" v-model="store.client.organisation_id">
-          <option v-for="organisation in store.organisations" :key="organisation.id" :value="organisation.id">{{
-            organisation.name }}</option>
+          <option v-for="organisation in store.organisations" :key="organisation.id" :value="organisation.id">
+            {{ organisation.name }}
+          </option>
         </select>
         <input v-else type="text" v-model="store.client.parent_organisation_name" disabled="true" />
-        <label>Organisation parente</label>
+        <label>
+          {{ interfaceStrings.parentOrganization }}
+        </label>
       </div>
       <div class="field label border" v-if="store.client.id != null">
         <input type="text" v-model="store.client.api_uid" disabled="true" />
-        <label>API UID</label>
-        <a @click="initApi">Générer</a>
+        <label>
+          {{ interfaceStrings.apiUid }}
+        </label>
+        <a @click="initApi">
+          {{ interfaceStrings.generate }}
+        </a>
       </div>
       <div class="field label border" v-if="store.client.id != null">
         <select v-model="store.client.sso_provider">
-          <option value="">Pas de SSO</option>
-          <option value="okta">Okta</option>
-          <option value="ldap">LDAP</option>
+          <option value="">
+            {{ interfaceStrings.noSso }}
+          </option>
+          <option value="okta">
+            {{ interfaceStrings.okta }}
+          </option>
+          <option value="ldap">
+            {{ interfaceStrings.ldap }}
+          </option>
         </select>
-        <label>SSO Provider (Single Sign-On)</label>
+        <label>
+          {{ interfaceStrings.ssoProvider }}
+        </label>
       </div>
     </div>
     <div class="s6 l6">
@@ -36,23 +53,32 @@
           <option v-for="fallback in store.fallbacks" :key="fallback.id" :value="fallback.id">{{ fallback.name }}
           </option>
         </select>
-        <label>Fallback audio</label>
+        <label>
+          {{ interfaceStrings.fallbackAudio }}
+        </label>
       </div>
       <div class="field label border">
         <select v-model="store.client.brand_id">
           <option v-for="brand in store.brands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
         </select>
-        <label>Marque</label>
+        <label>
+          {{ interfaceStrings.marque }}
+        </label>
       </div>
       <div class="field label border" v-if="store.client.id == null">
         <input type="checkbox" v-model="store.client.import_templates" value="true" />
-        <label><b>Importer les modèles de template</b></label>
-        <span>En cochant cette case tous les templates de l'organisation DEEPIDOO SIEGE [Bureaux] taggés "Modèle de
-          templates" seront copiés dans la nouvelle organisation</span>
+        <label>
+          <b>{{ interfaceStrings.importTemplateDesigns }}</b>
+        </label>
+        <span>
+          {{ interfaceStrings.importTeDeDescription }}
+        </span>
       </div>
       <div class="field label border" v-if="store.client.id != null">
         <input type="text" v-model="store.client.api_secret" disabled="true" />
-        <label>API Secret</label>
+        <label>
+          {{ interfaceStrings.apiSecret }}
+        </label>
       </div>
     </div>
   </div>
@@ -63,15 +89,18 @@
 import SharedErrors from "@/javascript/admin/views/shared/_errors.vue";
 import router from "../../routes";
 import { ClientStore } from "../../stores/client";
+import { messages, urls } from "../../../const/const";
 
+const interfaceStrings = messages.interfaceStrings;
+const interfaceValues = messages.interfaceValues;
 const store = ClientStore();
 
 const initApi = function () {
   store.initApi(store.client.id).then(resolve => {
-    alert("API UID généré");
-    router.push("/clients/" + store.client.id);
+    alert(messages.clients.initApi.success);
+    router.push(`/${urls.clients.prefix}/` + store.client.id);
   }).catch(reject => {
-    alert("An error has occured");
+    alert(messages.errorOccured);
   });
 };
 

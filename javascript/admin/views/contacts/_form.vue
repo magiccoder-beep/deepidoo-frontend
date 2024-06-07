@@ -3,16 +3,16 @@
     <div class="s6 l6">
       <div class="field label border">
         <input type="text" v-model="store.contact.firstname" />
-        <label>Prénom*</label>
+        <label>{{ interfaceStrings.firstName }}*</label>
         <SharedErrors attr="firstname" :messages="store.errors" />
       </div>
       <div class="field label border">
         <select v-model="store.contact.contactable_type" @change="resetContactable">
-          <option value="Client">Client</option>
-          <option value="Site">Site</option>
-          <option value="">Autre</option>
+          <option value="Client">{{ interfaceStrings.client }}</option>
+          <option value="Site">{{ interfaceStrings.site }}</option>
+          <option value="">{{ interfaceValues.empty }}</option>
         </select>
-        <label>Rattaché à...</label>
+        <label>{{ interfaceStrings.attachedTo }}</label>
         <SharedErrors attr="contactable_type" :messages="store.errors" />
       </div>
       <div class="field border">
@@ -32,22 +32,22 @@
     <div class="s6 l6">
       <div class="field label border">
         <input type="text" v-model="store.contact.lastname" />
-        <label>Nom</label>
+        <label>{{ $t('name') }}</label>
         <SharedErrors attr="lastname" :messages="store.errors" />
       </div>
       <div class="field label border">
         <input type="text" v-model="store.contact.email" />
-        <label>Email</label>
+        <label>{{ $t('email') }}</label>
         <SharedErrors attr="email" :messages="store.errors" />
       </div>
-      <div class="field label border">
+      <div class="form-group field label border">
         <input type="text" v-model="store.contact.phone" ref="phone" @blur="setPhone" />
-        <label>Téléphone</label>
+        <label>{{ $t('phone') }}</label>
         <SharedErrors attr="phone" :messages="store.errors" />
       </div>
       <div class="field label border">
         <textarea v-model="store.contact.notes"></textarea>
-        <label>Notes</label>
+        <label>{{ $t('notes') }}</label>
         <SharedErrors attr="notes" :messages="store.errors" />
       </div>
     </div>
@@ -57,25 +57,34 @@
 <script setup>
 import SharedErrors from '@/javascript/admin/views/shared/_errors.vue';
 import { ContactStore } from '../../stores/contact';
+import { messages } from '../../../const/const';
 
 const store = ContactStore();
+const interfaceStrings = messages.interfaceStrings;
+const interfaceValues = messages.interfaceValues;
 
 const setPhone = function () {
   store.setPhone();
 };
-
 const autoCompleteContactable = function () {
-  store.autoComplete({ keywords: args.contact.contactable_name, what: "store.contactables", scope: args.contact.contactable_type, client_id: args.client });
+  store.autoComplete({ keywords: store.contact.contactable_name, what: "contactables", scope: store.contact.contactable_type, client_id: store.contactable_id });
 };
-
 const clearContactables = function () {
-  store.setContactable({ results: [] });
+  store.setContactables({ results: [] });
 };
 const pickContactable = function (contactables) {
-  store.setContactable(contactables);
+  store.setContactables(contactables);
 };
 const resetContactable = function () {
-  store.setContactable({ id: null, name: '' });
+  store.setContactables({ id: null, name: '' });
 };
+
+const initPhone = function (element) {
+  store.initPhone(element);
+};
+
+onMounted(() => {
+  initPhone(ref['phone']);
+})
 
 </script>

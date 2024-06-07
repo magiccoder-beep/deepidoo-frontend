@@ -29,17 +29,17 @@
 
 <script setup>
 import ClientForm from "./_form.vue";
-import { ClientStore } from "../../stores/client";
 import router from "../../routes";
+import { ClientStore } from "../../stores/client";
+import { messages, urls } from "../../../const/const";
 
 const store = ClientStore();
 
 const create = function () {
   store.create().then(response => {
-    alert("Client created");
-    router.push('/clients/' + response.data.client.id);
+    router.push(`/${urls.clients.prefix}/` + response.data.client.id);
   }).catch(reject => {
-    alert("An error has occured");
+    alert(messages.errorOccured);
   });
 };
 

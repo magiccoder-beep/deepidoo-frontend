@@ -2,24 +2,23 @@
   <main class="responsive max">
     <nav-top></nav-top>
 
-
     <ul class="breadcrumb">
       <li>
-        <router-link to="/">{{ $t('top_nav.admin_title') }}</router-link>
+        <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
       </li>
       <li>
-        <router-link to="/contacts">Contacts</router-link>
+        <router-link :to="'/contacts'">{{ $t('Contacts') }}</router-link>
       </li>
       <li>{{ store.contact.firstname }} {{ store.contact.lastname }}</li>
     </ul>
 
-
-    <div class="content">
-      <form @submit.prevent="update" accept-charset="UTF-8" class="form" :class="store.progress">
+    <div class="s12 l6">
+      <form @submit.prevent="update" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
         <ContactForm />
-        <button>{{ $t('save') }}</button>
-        <a class="chip round absolute bottom right" v-if="store.contact.id != null" href="#"
-          @click="destroy">Supprimer</a>
+        <button class="btn">{{ $t('save') }}</button>
+        <a class="chip round absolute bottom right" v-if="store.contact.id" href="#" @click="destroy">
+          {{ messages.delete }}
+        </a>
       </form>
     </div>
     <footer-custom></footer-custom>
@@ -29,27 +28,26 @@
 <script setup>
 import ContactForm from "./_form.vue";
 import router from "../../routes";
-
 import { ContactStore } from "../../stores/contact";
-
+import { messages, urls } from "../../../const/const";
 
 const store = ContactStore();
 const location = useRoute();
 
 const update = function () {
   store.update().then(resolve => {
-    alert("Contact mis à jour");
+    alert(messages.contacts.update.success);
   }).catch(reject => {
-    alert("An error has occured");
+    alert(messages.errorOccured);
   });
 };
 
 const destroy = function () {
-  if (confirm("Êtes vous sur ?!")) {
+  if (confirm(messages.contacts.destroy.confirm)) {
     store.destroy().then(resolve => {
-      router.push('/contacts');
+      router.push(`/${urls.contacts.prefix}`);
     }).catch(reject => {
-      alert("An error has occured");
+      alert(messages.errorOccured);
     });
   }
 };

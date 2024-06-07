@@ -12,8 +12,9 @@
             <li class="text-gray-600">Contacts</li>
           </ul>
           <div class="flex justify-end">
-            <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">+ Nouveau
-              contact</router-link>
+            <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">
+              {{ interfaceStrings.newContact }}
+            </router-link>
           </div>
         </div>
 
@@ -55,7 +56,9 @@
 import ContactsFilters from "./_filters.vue";
 import SharedPagination from "../shared/_pagination.vue";
 import { ContactStore } from "../../stores/contact";
+import { messages } from "../../../const/const";
 
+const interfaceStrings = messages.interfaceStrings;
 const store = ContactStore();
 const location = useRoute();
 

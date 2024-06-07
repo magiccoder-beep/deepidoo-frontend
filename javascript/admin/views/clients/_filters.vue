@@ -30,7 +30,7 @@
       </div>
 
       <div class="row-actions">
-        <button @click="reset" href="#" class="button transparent border">{{ $t('reset_filters') }}</button>
+        <button @click="reset" class="button transparent border">{{ $t('reset_filters') }}</button>
         <button class="btn">{{ $t('filter') }}</button>
       </div>
     </form>

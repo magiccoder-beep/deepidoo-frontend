@@ -24,7 +24,7 @@
               <th>{{ $t('ref') }}</th>
               <th>{{ $t('created_at') }}</th>
               <th>{{ $t('name') }}</th>
-              <th>Marque</th>
+              <th>{{ $t('Marque') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -41,7 +41,7 @@
                 {{ client.brand }}
               </td>
               <td>
-                <span class="glyph-icon si-glyph-bullet-list-2"></span>Générer un rapport
+                <span class="glyph-icon si-glyph-bullet-list-2"></span>{{ messages.interfaceStrings.generateReport }}
               </td>
             </tr>
           </tbody>
@@ -59,6 +59,7 @@
 import ClientFilters from "./_filters.vue";
 import SharedPagination from "../shared/_pagination.vue";
 import { ClientStore } from "../../stores/client";
+import { messages } from "../../../const/const";
 
 const store = ClientStore();
 const location = useRoute();

@@ -18,8 +18,10 @@
       <div class="s12 l6">
         <form @submit.prevent="update" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
           <ClientForm />
-          <button>{{ $t('save') }}</button>
-          <a class="chip round absolute bottom right" v-if="store.client.id" href="#" @click="destroy">Supprimer</a>
+          <button class="btn">{{ $t('save') }}</button>
+          <a class="chip round absolute bottom right" v-if="store.client.id" href="#" @click="destroy">
+            {{ $t('delete') }}
+          </a>
         </form>
       </div>
     </div>
@@ -29,29 +31,30 @@
 </template>
 
 <script setup>
-import DestroyModal from "./modals/destroy.vue";
 import ClientForm from "./_form.vue";
 import router from "../../routes";
 import { ClientStore } from "../../stores/client";
+import { urls, messages } from "../../../const/const";
 
+const clientMessages = messages.clients;
 const store = ClientStore();
 const location = useRoute();
 
 const update = function () {
   store.update().then(resolve => {
-    alert("Client mis à jour");
+    alert(clientMessages.update.success);
   }).catch(reject => {
-    alert("An error has occured");
+    alert(messages.errorOccured);
   });
 };
 
 
 const destroy = function () {
-  if (confirm("Êtes vous sur ?!")) {
+  if (confirm(clientMessages.destroy.confirm)) {
     store.destroy(store.client.name).then(resolve => {
-      router.push('/clients');
+      router.push(`/${urls.clients.prefix}`);
     }).catch(reject => {
-      alert("An error has occured");
+      alert(messages.errorOccured);
     });
   }
 };

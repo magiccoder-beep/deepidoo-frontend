@@ -1,4 +1,8 @@
 import { defineStore } from 'pinia';
+import { messages, urls } from '../../const/const';
+
+const contactsConst = urls.contacts;
+const contactsConstPrefix = contactsConst.prefix;
 
 export const ContactStore = defineStore('contact', {
   state: () => {
@@ -10,6 +14,7 @@ export const ContactStore = defineStore('contact', {
       contacttables: [],
       contacts: [],
       phone: null,
+      client: '',
     }
   },
 
@@ -22,7 +27,7 @@ export const ContactStore = defineStore('contact', {
     },
 
     async new() {
-      return this.Api.get(`/contacts/new`).then(response => {
+      return this.Api.get(`/${contactsConstPrefix}/${contactsConst.new}`).then(response => {
         this.contact = response.data.contact;
       })
     },
@@ -31,15 +36,22 @@ export const ContactStore = defineStore('contact', {
       this.contact = {};
     },
 
+    async initPhone(element) {
+      this.phone = window.intlTelInput(element, {
+        preferredCountries: ["fr", "us", "ca", "de"],
+        separateDialCode: true,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+      });
+    },
+
     async autoComplete(args) {
       if (window.Global.timer != null) {
         clearTimeout(window.Global.timer);
       }
-
       if (args.keywords.length > 1) {
         window.Global.timer = window.setTimeout(() => {
           window.Global.timer = null;
-          return this.Api.post(`/autocomplete`, {
+          return this.Api.post(`/${contactsConst.autoComplete}`, {
             q: args.keywords,
             what: args.what,
             scope: args.scope,
@@ -49,7 +61,7 @@ export const ContactStore = defineStore('contact', {
           })
         }, 200);
       } else {
-        if (args.what == 'contacts') {
+        if (args.what == contactsConst.prefix) {
           this.contacts = [];
         } else {
           this.contacttables = [];
@@ -59,15 +71,15 @@ export const ContactStore = defineStore('contact', {
 
     async create() {
       this.errors = {};
-      this.progress = 'loading';
+      this.progress = messages.loading;
       return new Promise((resolve, reject) => {
-        return this.Api.post(`/contacts`, this.contact).then(response => {
-          this.progress = 'success';
+        return this.Api.post(`/${contactsConstPrefix}`, this.contact).then(response => {
+          this.progress = messages.success;
           this.errors = {};
           resolve(response);
         }).catch(error => {
           this.errors = error.response.data.errors;
-          this.progress = 'error';
+          this.progress = messages.error;
           reject(false);
         }).finally(() => {
           this.progress = '';
@@ -76,23 +88,24 @@ export const ContactStore = defineStore('contact', {
     },
 
     async edit(id) {
-      return this.Api.get(`/contacts/${id}`).then(response => {
+      return this.Api.get(`/${contactsConstPrefix}/${id}`).then(response => {
         this.contact = response.data.contact;
+        this.contacttables = response.data.contacttables;
       })
     },
 
     async update() {
       this.errors = {};
-      this.progress = 'loading';
+      this.progress = messages.loading;
 
       return new Promise((resolve, reject) => {
-        return this.Api.put(`/contacts/${this.contact.id}`, this.contact).then(response => {
-          this.progress = 'success';
+        return this.Api.put(`/${contactsConstPrefix}/${this.contact.id}`, this.contact).then(response => {
+          this.progress = messages.success;
           this.errors = {};
           resolve(response);
         }).catch(error => {
           this.errors = error.response.data.errors;
-          this.progress = 'error';
+          this.progress = messages.error;
           reject(false);
         }).finally(() => {
           this.progress = '';
@@ -101,12 +114,12 @@ export const ContactStore = defineStore('contact', {
     },
 
     async destroy() {
-      return this.Api.destroy(`/contacts/${this.contact.id}`).then(response => {
+      return this.Api.destroy(`/${contactsConstPrefix}/${this.contact.id}`).then(response => {
         this.errors = {};
-        this.progress = 'success';
+        this.progress = messages.success;
       }).catch(error => {
         this.errors = error.response.data.errors;
-        this.progress = 'error';
+        this.progress = messages.error;
       })
     },
 
