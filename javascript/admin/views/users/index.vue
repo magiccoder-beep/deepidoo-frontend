@@ -1,5 +1,6 @@
 <template>
   <main class="responsive max">
+    
     <div class="grid">
       <div class="s12">
         <UsersFilters :pagination="store.pagination" />

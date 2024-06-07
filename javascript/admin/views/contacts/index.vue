@@ -19,8 +19,6 @@
         </div>
 
         <ContactsFilters :pagination="store.pagination"></ContactsFilters>
-
-
         <table class="stripes table table-striped">
           <thead>
             <tr>
@@ -44,7 +42,6 @@
             </tr>
           </tbody>
         </table>
-
         <SharedPagination v-if="store.pagination" :store="store" @clicked="load" />
       </div>
     </div>

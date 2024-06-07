@@ -14,11 +14,13 @@
 
     <div class="s12 l6">
       <form @submit.prevent="update" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
-        <ContactForm />
-        <button class="btn">{{ $t('save') }}</button>
-        <a class="chip round absolute bottom right" v-if="store.contact.id" href="#" @click="destroy">
-          {{ messages.delete }}
-        </a>
+        <ContactForm /> 
+        <div class="grid">
+          <button class="btn">{{ $t('save') }}</button>
+          <a class="chip round absolute bottom right" v-if="store.contact.id" href="#" @click="destroy">
+            {{ messages.delete }}
+          </a>
+        </div>
       </form>
     </div>
     <footer-custom></footer-custom>

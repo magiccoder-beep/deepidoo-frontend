@@ -1,51 +1,55 @@
 <template>
   <div class="grid responsive">
-    <div class="s6 l6">
+    <div class="s12 l6">
       <div class="field label border">
         <input type="text" v-model="store.contact.firstname" />
         <label>{{ interfaceStrings.firstName }}*</label>
         <SharedErrors attr="firstname" :messages="store.errors" />
       </div>
       <div class="field label border">
-        <select v-model="store.contact.contactable_type" @change="resetContactable">
-          <option value="Client">{{ interfaceStrings.client }}</option>
-          <option value="Site">{{ interfaceStrings.site }}</option>
-          <option value="">{{ interfaceValues.empty }}</option>
-        </select>
-        <label>{{ interfaceStrings.attachedTo }}</label>
-        <SharedErrors attr="contactable_type" :messages="store.errors" />
-      </div>
-      <div class="field border">
-        <input type="text" class="hidden" v-model="store.contact.contactable_id" />
-      </div>
-
-      <div class="field border">
-        <input type="text" v-model="store.contact.contactable_name" @keyup="autoCompleteContactable" />
-        <ul class="breadcrumb" v-click-outside="clearContactables">
-          <li v-for="contactable in store.contactables" :key="store.contactable.id"><a href="#"
-              @click.prevent="pickContactable(contactable)">{{ contactable.name }}</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div class="s6 l6">
-      <div class="field label border">
         <input type="text" v-model="store.contact.lastname" />
         <label>{{ $t('name') }}</label>
         <SharedErrors attr="lastname" :messages="store.errors" />
       </div>
+      <div class="grid field">
+        
+        <div class="s4">
+          <div class="field label border">
+            <select v-model="store.contact.contactable_type" @change="resetContactable">
+              <option value="Client">{{ interfaceStrings.client }}</option>
+              <option value="Site">{{ interfaceStrings.site }}</option>
+              <option value="">Autre</option>
+            </select>
+            <label>{{ interfaceStrings.attachedTo }}</label>
+            <SharedErrors attr="contactable_type" :messages="store.errors" />
+          </div>
+        </div>
+        <div class="s8">
+          <div class="field border">
+            <input type="text" v-model="store.contact.contactable_name" @keyup="autoCompleteContactable" />
+            <ul class="breadcrumb" v-click-outside="clearContactables">
+              <li v-for="contactable in store.contactables" :key="store.contactable.id"><a href="#"
+                  @click.prevent="pickContactable(contactable)">{{ contactable.name }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="field border hidden">
+          <input type="text" class="hidden" v-model="store.contact.contactable_id" />
+        </div>
+    </div>
+
+    <div class="s12 l6">
       <div class="field label border">
         <input type="text" v-model="store.contact.email" />
-        <label>{{ $t('email') }}</label>
+        <label>{{ $t('Email') }}</label>
         <SharedErrors attr="email" :messages="store.errors" />
       </div>
-      <div class="form-group field label border">
-        <input type="text" v-model="store.contact.phone" ref="phone" @blur="setPhone" />
-        <label>{{ $t('phone') }}</label>
-        <SharedErrors attr="phone" :messages="store.errors" />
+      <div class="field position-re">
+        <span class="phone_number">Phone Number</span>
+        <input type="text" class="form-control" v-model="store.contact.phone" ref="phoneElement" @blur="setPhone" />
       </div>
-      <div class="field label border">
+      <div class="field textarea label border">
         <textarea v-model="store.contact.notes"></textarea>
         <label>{{ $t('notes') }}</label>
         <SharedErrors attr="notes" :messages="store.errors" />
@@ -61,7 +65,6 @@ import { messages } from '../../../const/const';
 
 const store = ContactStore();
 const interfaceStrings = messages.interfaceStrings;
-const interfaceValues = messages.interfaceValues;
 
 const setPhone = function () {
   store.setPhone();
@@ -83,8 +86,10 @@ const initPhone = function (element) {
   store.initPhone(element);
 };
 
+const phoneElement = ref(null);
+
 onMounted(() => {
-  initPhone(ref['phone']);
+  initPhone(phoneElement.value);
 })
 
 </script>
