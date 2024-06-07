@@ -1,59 +1,76 @@
 <template>
-  <div class="col-xs-24 filters">
-    <span class="results-count">{{ pagination.count }} {{ $tc('results', pagination.count)}}</span>
-    <ul class="box-filters droppable" @click="$event.target.classList.toggle('dropped')">
-      <li class="active">
-        <a href="#" @click="toggleFilters" class="toggle">
-          <span class="glyph-icon si-glyph-text-search"></span>
-          {{ $t('filter') }}
-        </a>
-      </li>
-      <li>
-        <a :href="'/fr/api/admin/clients.xlsx?q' + this.$route.fullPath.split('?q')[1]">
-          <span class="glyph-icon si-glyph-bullet-list-2"></span>Export Excel
-        </a>
-      </li>
-    </ul>
-    <form v-on:submit.prevent="filter" accept-charset="UTF-8" class="form col-xs-24 well hidden">
-      <div class="form-group col-md-6">
-        <label>{{ $t('Ref') }}</label>
-        <input type="text" v-model="form.id_eq" class="form-control" />
+  <section class="filters">
+
+    <div class="row-top">
+      <a href="#" @click.prevent="toggleForm" class="droppable">
+        <i class="tiny right">keyboard_arrow_right</i>
+        <i class="tiny down">keyboard_arrow_down</i>
+        {{ $t('filter') }}
+        <span v-if="props.pagination.count > 0">({{ props.pagination.count }} {{ $t('results', props.pagination.count)
+          }})</span>
+      </a>
+      <a :href="searchQuery()"><i class="tiny">docs_apps_script</i>{{ $t('xls_export') }}</a>
+    </div>
+
+    <form ref="filters" @submit.prevent="search" class="hidden" accept-charset="UTF-8">
+      <div class="grid">
+        <div class="s12 m6 l2">
+          <div class="field label border">
+            <input type="text" v-model="form.id_eq" class="form-control" />
+            <label>{{ $t('Ref') }}</label>
+          </div>
+        </div>
+
+        <div class="s12 m6 l2">
+          <div class="field label border">
+            <input type="text" v-model="form.name_cont" class="form-control" />
+            <label>{{ $t('name') }}</label>
+          </div>
+        </div>
       </div>
-      <div class="form-group col-md-6">
-        <label>{{ $t('name') }}</label>
-        <input type="text" v-model="form.name_cont" class="form-control" />
-      </div>
-      <div class="form-group col-md-24">
-        <input type="submit" class="btn btn-primary" :value="$t('filter')" />
+
+      <div class="row-actions">
+        <button @click="reset" class="button transparent border">{{ $t('reset_filters') }}</button>
+        <button class="btn">{{ $t('filter') }}</button>
       </div>
     </form>
-  </div>
+  </section>
 </template>
 
-<script>
-export default {
-  props: ["pagination"],
-  data: function() {
-    return {
-      form: {
-        id_eq: "",
-        name_cont: ""
-      }
-    };
-  },
+<script setup>
+import router from '../../routes';
 
-  methods: {
-    toggleFilters: function() {
-      window.$(".filters .well").toggleClass("hidden");
-    },
-    filter: function() {
-      let query = {};
-      for (let el in this.form) {
-        query["q[" + el + "]"] = this.form[el];
-      }
-      this.$router.push({ query: query });
-      window.$(".filters .well").toggleClass("hidden");
-    }
-  }
+const route = useRoute();
+const props = defineProps(['pagination']);
+const filters = ref(null);
+const form = ref({
+  id_eq: route.query["q[id_eq]"],
+  name_cont: route.query["q[name_cont]"],
+});
+
+const toggleForm = (e) => {
+  e.target.closest("a").classList.toggle('open');
+  filters.value.classList.toggle('hidden');
 };
+
+const searchQuery = () => {
+  return '/api/admin/clients.xlsx?' + new URLSearchParams(route.query);
+}
+
+const search = () => {
+  const query = Object.fromEntries(
+    Object.entries(form.value).map(entry => [`q[${entry[0]}]`, entry[1]])
+  );
+  router.push({ path: route.path, query: query });
+};
+
+const reset = () => {
+  form.value = {
+    ...form.value,
+    id_eq: '',
+    name_cont: '',
+  }
+}
+
+
 </script>

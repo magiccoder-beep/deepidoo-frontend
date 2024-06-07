@@ -4,12 +4,69 @@ import TicketIndex from './views/tickets/index.vue';
 import UserIndex from './views/users/index.vue';
 import UserShow from './views/users/show.vue';
 
+import ContactIndex from './views/contacts/index.vue';
+import ContactNew from './views/contacts/new.vue';
+import ContactEdit from './views/contacts/edit.vue';
+
+import ClientIndex from './views/clients/index.vue';
+import ClientEdit from './views/clients/edit.vue';
+import ClientNew from './views/clients/new.vue';
+import { urls } from '../const/const';
+
+const users = urls.users.frontend;
+const contacts = urls.contacts.frontend;
+const clients = urls.clients.frontend;
+
 const router = createRouter({
   history: createWebHistory(`/${I18n.prefix}admin`),
   routes: [
-    { path: '/', component: TicketIndex, name: 'home' }, 
-    { path: '/users', component: UserIndex, name: 'users' },
-    { path: '/users/:id', component: UserShow, name: 'user' }
+    {
+      path: '/',
+      component: TicketIndex,
+      name: 'home'
+    },
+    {
+      path: users.url.index,
+      component: UserIndex,
+      name: users.name.index
+    },
+    {
+      path: users.url.edit,
+      component: UserShow,
+      name: users.name.edit
+    },
+
+    {
+      path: contacts.url.index,
+      component: ContactIndex,
+      name: contacts.name.index
+    },
+    {
+      path: contacts.url.new,
+      component: ContactNew,
+      name: contacts.name.new
+    },
+    {
+      path: contacts.url.edit,
+      component: ContactEdit,
+      name: contacts.name.edit
+    },
+
+    {
+      path: clients.url.index,
+      component: ClientIndex,
+      name: clients.name.index
+    },
+    {
+      path: clients.url.new,
+      component: ClientNew,
+      name: clients.name.new
+    },
+    {
+      path: clients.url.edit,
+      component: ClientEdit,
+      name: clients.name.edit
+    },
   ]
 });
 

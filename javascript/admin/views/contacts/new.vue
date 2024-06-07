@@ -1,54 +1,51 @@
 <template>
-  <div class="main_container">
+  <main class="responsive max">
     <nav-top></nav-top>
-
-    <div class="clients" role="main">
-      <div class="col-xs-24">
-        <ul class="breadcrumb pull-left">
-          <li>
-            <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
-          </li>
-          <li>
-            <router-link :to="'/contacts'">Contacts</router-link>
-          </li>
-          <li>Nouveau contact</li>
-        </ul>
-      </div>
-
-      <div class="col-xs-24">
-        <form v-on:submit.prevent="create" accept-charset="UTF-8" class="form styled-form">
-          <contact-form></contact-form>
-          <div class="clearfix"></div>
-        </form>
+    <div class="main_container">
+      <div class="clients" role="main">
+        <div class="s12 l6">
+          <ul class="breadcrumb pull-left">
+            <li>
+              <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
+            </li>
+            <li>
+              <router-link :to="'/contacts'">{{ interfaceStrings.contact }}</router-link>
+            </li>
+            <li>{{ interfaceStrings.newContact }}</li>
+          </ul>
+        </div>
+        <div class="s12 l6">
+          <form @submit.prevent="create" accept-charset="UTF-8" class="form styled-form">
+            <ContactForm />
+            <button>{{ $t('create') }}</button>
+          </form>
+        </div>
       </div>
     </div>
-
     <footer-custom></footer-custom>
-  </div>
+  </main>
 </template>
 
-<script>
+<script setup>
 import ContactForm from "./_form.vue";
+import router from "../../routes";
+import { ContactStore } from "../../stores/contact";
+import { messages } from "../../../const/const";
 
-export default {
-  components: {
-    "contact-form": ContactForm
-  },
+const store = ContactStore();
 
-  data: function() {
-    return this.$store.state.ContactStore;
-  },
+const interfaceStrings = messages.interfaceStrings;
 
-  mounted: function() {
-    this.$store.dispatch("ContactStore/new");
-  },
-
-  methods: {
-    create: function(e) {
-      this.$store.dispatch("ContactStore/create", this.contact).then(response => {
-        this.$router.push("/contacts/" + response.contact.id);
-      });
-    }
-  }
+const create = function () {
+  store.create().then(resolve => {
+    router.push(`/${messages.contacts.prefix}/` + resolve.data.contact.id);
+  }).catch(reject => {
+    alert(messages.errorOccured);
+  });
 };
+
+onMounted(() => {
+  store.initContact();
+});
+
 </script>

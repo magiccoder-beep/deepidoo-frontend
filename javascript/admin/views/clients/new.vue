@@ -1,9 +1,9 @@
 <template>
-  <div class="main_container">
+  <div class="responsive max">
     <nav-top></nav-top>
 
-    <div class="clients" role="main">
-      <div class="col-xs-24">
+    <div class="clients">
+      <div class="s12 l6">
         <ul class="breadcrumb pull-left">
           <li>
             <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
@@ -15,10 +15,10 @@
         </ul>
       </div>
 
-      <div class="col-xs-24">
-        <form v-on:submit.prevent="create" accept-charset="UTF-8" class="form styled-form">
-          <client-form></client-form>
-          <div class="clearfix"></div>
+      <div class="s12 l6">
+        <form @submit.prevent="create" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
+          <ClientForm />
+          <button>{{ $t('save') }}</button>
         </form>
       </div>
     </div>
@@ -27,28 +27,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ClientForm from "./_form.vue";
+import router from "../../routes";
+import { ClientStore } from "../../stores/client";
+import { messages, urls } from "../../../const/const";
 
-export default {
-  components: {
-    "client-form": ClientForm
-  },
+const store = ClientStore();
 
-  data: function() {
-    return this.$store.state.ClientStore;
-  },
-
-  mounted: function() {
-    this.$store.dispatch("ClientStore/new");
-  },
-
-  methods: {
-    create: function(e) {
-      this.$store.dispatch("ClientStore/create", this.client).then(response => {
-        this.$router.push("/clients/" + response.client.id);
-      });
-    }
-  }
+const create = function () {
+  store.create().then(response => {
+    router.push(`/${urls.clients.prefix}/` + response.data.client.id);
+  }).catch(reject => {
+    alert(messages.errorOccured);
+  });
 };
+
+onMounted(() => {
+  store.new();
+});
+
 </script>
