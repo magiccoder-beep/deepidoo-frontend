@@ -4,22 +4,21 @@
 
     <div class="grid">
       <div class="s12">
-        <div class="w-full">
-          <ul class="breadcrumb flex justify-start">
-            <li class="mr-2">
-              <router-link :to="'/'" class="text-blue-500 hover:underline">{{ $t('top_nav.admin_title') }}</router-link>
-            </li>
-            <li class="text-gray-600">Contacts</li>
-          </ul>
-          <div class="flex justify-end">
-            <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">
-              {{ interfaceStrings.newContact }}
-            </router-link>
-          </div>
+        <ul class="breadcrumb flex justify-start">
+          <li class="mr-2">
+            <router-link :to="'/'" class="text-blue-500 hover:underline">{{ $t('top_nav.admin_title') }}</router-link>
+          </li>
+          <li class="text-gray-600">Contacts</li>
+        </ul>
+        <div class="flex justify-end">
+          <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">
+            {{ interfaceStrings.newContact }}
+          </router-link>
         </div>
-
+      </div>
+      <div class="s12">
         <ContactsFilters :pagination="store.pagination"></ContactsFilters>
-        <table class="stripes table table-striped">
+        <table class="stripes table table-stripped">
           <thead>
             <tr>
               <th>{{ $t('name') }}</th>

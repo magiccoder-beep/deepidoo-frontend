@@ -14,7 +14,7 @@
     <button class="transparent circle" data-ui="#dialog-right"><i>menu</i></button>
     <ul>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Dashboard tickets</router-link></li>
-      <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Catalogue</router-link></li>
+      <li><router-link :to="{ name: 'musics' }" data-ui="#dialog-right">Catalogue</router-link></li>
       <li><router-link :to="{ name: 'clients' }" data-ui="#dialog-right">Clients</router-link></li>
       <li><router-link :to="{ name: 'contacts' }" data-ui="#dialog-right">Contacts</router-link></li>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Commandes</router-link></li>

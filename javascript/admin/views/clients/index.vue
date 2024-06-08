@@ -4,21 +4,19 @@
 
     <div class="grid">
       <div class="s12">
-        <div class="w-full">
-          <ul class="breadcrumb pull-left">
-            <li>
-              <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
-            </li>
-            <li>{{ $t('top_nav.clients') }}</li>
-          </ul>
-          <div class="pull-right">
-            <router-link :to="'/clients/new'" class="add-link">+ {{ $t('clients.new') }}</router-link>
-          </div>
+        <ul class="breadcrumb pull-left">
+          <li>
+            <router-link :to="'/'">{{ $t('top_nav.admin_title') }}</router-link>
+          </li>
+          <li>{{ $t('top_nav.clients') }}</li>
+        </ul>
+        <div class="pull-right">
+          <router-link :to="'/clients/new'" class="add-link">+ {{ $t('clients.new') }}</router-link>
         </div>
-
+      </div>
+      <div class="s12">
         <ClientFilters :pagination="store.pagination"></ClientFilters>
-
-        <table class="stripes table table-striped">
+        <table class="stripes table table-stripped">
           <thead>
             <tr>
               <th>{{ $t('ref') }}</th>

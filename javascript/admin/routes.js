@@ -13,6 +13,9 @@ import ClientEdit from './views/clients/edit.vue';
 import ClientNew from './views/clients/new.vue';
 import { urls } from '../const/const';
 
+import MusicIndex from './views/music/index.vue';
+import * as MUSIC_CONSTS from '../const/music';
+
 const users = urls.users.frontend;
 const contacts = urls.contacts.frontend;
 const clients = urls.clients.frontend;
@@ -20,53 +23,19 @@ const clients = urls.clients.frontend;
 const router = createRouter({
   history: createWebHistory(`/${I18n.prefix}admin`),
   routes: [
-    {
-      path: '/',
-      component: TicketIndex,
-      name: 'home'
-    },
-    {
-      path: users.url.index,
-      component: UserIndex,
-      name: users.name.index
-    },
-    {
-      path: users.url.edit,
-      component: UserShow,
-      name: users.name.edit
-    },
+    { path: '/', component: TicketIndex, name: 'home' },
+    { path: users.url.index, component: UserIndex, name: users.name.index },
+    { path: users.url.edit, component: UserShow, name: users.name.edit },
 
-    {
-      path: contacts.url.index,
-      component: ContactIndex,
-      name: contacts.name.index
-    },
-    {
-      path: contacts.url.new,
-      component: ContactNew,
-      name: contacts.name.new
-    },
-    {
-      path: contacts.url.edit,
-      component: ContactEdit,
-      name: contacts.name.edit
-    },
+    { path: contacts.url.index, component: ContactIndex, name: contacts.name.index },
+    { path: contacts.url.new, component: ContactNew, name: contacts.name.new },
+    { path: contacts.url.edit, component: ContactEdit, name: contacts.name.edit },
 
-    {
-      path: clients.url.index,
-      component: ClientIndex,
-      name: clients.name.index
-    },
-    {
-      path: clients.url.new,
-      component: ClientNew,
-      name: clients.name.new
-    },
-    {
-      path: clients.url.edit,
-      component: ClientEdit,
-      name: clients.name.edit
-    },
+    { path: clients.url.index, component: ClientIndex, name: clients.name.index },
+    { path: clients.url.new, component: ClientNew, name: clients.name.new },
+    { path: clients.url.edit, component: ClientEdit, name: clients.name.edit },
+
+    { path: MUSIC_CONSTS.ROUTES.INDEX.URL, component: MusicIndex, name: MUSIC_CONSTS.ROUTES.INDEX.NAME },
   ]
 });
 
