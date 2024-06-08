@@ -6,12 +6,12 @@
       <div class="s12">
         <ul class="breadcrumb flex justify-start">
           <li class="mr-2">
-            <router-link :to="'/'" class="text-blue-500 hover:underline">{{ $t('top_nav.admin_title') }}</router-link>
+            <router-link :to="'/'" class="link">{{ $t('top_nav.admin_title') }}</router-link>
           </li>
           <li class="text-gray-600">Contacts</li>
         </ul>
         <div class="flex justify-end">
-          <router-link :to="'/contacts/new'" class="add-link text-blue-500 hover:underline">
+          <router-link :to="'/contacts/new'" class="link">
             {{ interfaceStrings.newContact }}
           </router-link>
         </div>
