@@ -3,4 +3,5 @@ export const MESSAGES = {
   SUCCESS: 'success',
   LOADING: 'loading',
   LOADED: 'loaded',
+  FAILED: 'failed',
 };

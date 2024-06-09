@@ -16,6 +16,9 @@ import { urls } from '../const/const';
 import MusicIndex from './views/music/index.vue';
 import * as MUSIC_CONSTS from '../const/music';
 
+import DeviceIndex from './views/devices/index.vue';
+import * as DEVICE_CONSTS from '../const/device';
+
 const users = urls.users.frontend;
 const contacts = urls.contacts.frontend;
 const clients = urls.clients.frontend;
@@ -36,6 +39,9 @@ const router = createRouter({
     { path: clients.url.edit, component: ClientEdit, name: clients.name.edit },
 
     { path: MUSIC_CONSTS.ROUTES.INDEX.URL, component: MusicIndex, name: MUSIC_CONSTS.ROUTES.INDEX.NAME },
+
+    { path: DEVICE_CONSTS.ROUTES.INDEX.URL, component: DeviceIndex, name: DEVICE_CONSTS.ROUTES.INDEX.NAME }
+
   ]
 });
 

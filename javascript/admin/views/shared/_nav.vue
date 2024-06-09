@@ -18,7 +18,7 @@
       <li><router-link :to="{ name: 'clients' }" data-ui="#dialog-right">Clients</router-link></li>
       <li><router-link :to="{ name: 'contacts' }" data-ui="#dialog-right">Contacts</router-link></li>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Commandes</router-link></li>
-      <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Devices</router-link></li>
+      <li><router-link :to="{ name: 'devices' }" data-ui="#dialog-right">Devices</router-link></li>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Monitoring</router-link></li>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Notifications</router-link></li>
       <li><router-link :to="{ name: 'home' }" data-ui="#dialog-right">Playlists</router-link></li>

@@ -17,7 +17,6 @@ export const MusicStore = defineStore('music', {
     async index(fullPath) {
       this.errors = {};
       this.progress = GLOBAL_CONSTS.MESSAGES.LOADING;
-
       return this.Api.get(fullPath).then(response => {
         this.contents = response.data.contents;
         this.pagination = response.data.pagination;
@@ -31,10 +30,8 @@ export const MusicStore = defineStore('music', {
     async update(id) {
       this.errors = {};
       this.progress = GLOBAL_CONSTS.MESSAGES.LOADING;
-
       return this.Api.put(`/${MUSIC_CONSTS.URLS.PREFIX}/${id}`).then(response => {
         this.progress = GLOBAL_CONSTS.MESSAGES.SUCCESS;
-        this.errors = {};
       }).catch(error => {
         this.errors = error.response.data.errors;
         this.progress = GLOBAL_CONSTS.MESSAGES.ERROR;
@@ -56,8 +53,6 @@ export const MusicStore = defineStore('music', {
           this.contents[index].validated = is_checked;
         }
         this.progress = GLOBAL_CONSTS.MESSAGES.SUCCESS;
-        this.errors = {};
-
       }).catch(error => {
         this.errors = error.response.data.errors;
         this.progress = GLOBAL_CONSTS.MESSAGES.ERROR;
