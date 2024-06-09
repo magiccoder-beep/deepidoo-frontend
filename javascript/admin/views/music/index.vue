@@ -16,12 +16,12 @@
         <table class="stripes table table-stripped">
           <thead>
             <tr>
-              <th>{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.ID }}</th>
-              <th>{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.CREATED_AT }}</th>
-              <th>{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.ARTIST }}</th>
+              <th class="min" style="width: 100px;">{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.ID }}</th>
+              <th class="min" style="width: 120px;">{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.CREATED_AT }}</th>
+              <th class="min" style="width: 220px;">{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.ARTIST }}</th>
               <th>{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.TITLE }}</th>
-              <th>{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.PLAYED_COUNT }}</th>
-              <th>
+              <th class="min" style="width: 130px;">{{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.PLAYED_COUNT }}</th>
+              <th class="min">
                 {{ MUSIC_CONSTS.MESSAGES.TABLE_HEADER.IS_VALID }}
                 <input type="checkbox" v-model="store.is_checked" @change="toggleAll"/>
               </th>
