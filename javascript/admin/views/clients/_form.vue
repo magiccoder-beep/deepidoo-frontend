@@ -1,7 +1,7 @@
 <template>
 
   <div class="grid responsive max">
-    <div class="s6 l6">
+    <div class="s12 l6">
       <div class="field label border">
         <SharedErrors attr="name" :messages="store.errors" />
         <input type="text" v-if="store.client" v-model="store.client.name" />
@@ -21,33 +21,17 @@
           {{ interfaceStrings.parentOrganization }}
         </label>
       </div>
-      <div class="field label border" v-if="store.client.id != null">
+      <div class="field label border position-re" v-if="store.client.id != null">
         <input type="text" v-model="store.client.api_uid" disabled="true" />
         <label>
           {{ interfaceStrings.apiUid }}
         </label>
-        <a @click="initApi">
-          {{ interfaceStrings.generate }}
+        <a @click="initApi" class="generate_api_key">
+          <u> {{ interfaceStrings.generate }} </u>
         </a>
       </div>
-      <div class="field label border" v-if="store.client.id != null">
-        <select v-model="store.client.sso_provider">
-          <option value="">
-            {{ interfaceStrings.noSso }}
-          </option>
-          <option value="okta">
-            {{ interfaceStrings.okta }}
-          </option>
-          <option value="ldap">
-            {{ interfaceStrings.ldap }}
-          </option>
-        </select>
-        <label>
-          {{ interfaceStrings.ssoProvider }}
-        </label>
-      </div>
     </div>
-    <div class="s6 l6">
+    <div class="s12 l6">
       <div class="field label border">
         <select v-model="store.client.fallback_id">
           <option v-for="fallback in store.fallbacks" :key="fallback.id" :value="fallback.id">{{ fallback.name }}
@@ -65,12 +49,14 @@
           {{ interfaceStrings.marque }}
         </label>
       </div>
-      <div class="field label border" v-if="store.client.id == null">
-        <input type="checkbox" v-model="store.client.import_templates" value="true" />
-        <label>
-          <b>{{ interfaceStrings.importTemplateDesigns }}</b>
+      <div class="field border" v-if="store.client.id == null">
+        <label class="checkbox">
+          <input type="checkbox" v-model="store.client.import_templates" value="true" />
+          <span> 
+            <b>{{ interfaceStrings.importTemplateDesigns }}</b>
+          </span>
         </label>
-        <span>
+        <span class="helper">
           {{ interfaceStrings.importTeDeDescription }}
         </span>
       </div>
@@ -80,6 +66,23 @@
           {{ interfaceStrings.apiSecret }}
         </label>
       </div>
+
+      <div class="field label border" v-if="store.client.id != null">
+        <select v-model="store.client.sso_provider">
+          <option value="">
+            {{ interfaceStrings.noSso }}
+          </option>
+          <option value="okta">
+            {{ interfaceStrings.okta }}
+          </option>
+          <option value="ldap">
+            {{ interfaceStrings.ldap }}
+          </option>
+        </select>
+        <label>
+          {{ interfaceStrings.ssoProvider }}
+        </label>
+      </div>
     </div>
   </div>
 
@@ -87,18 +90,16 @@
 
 <script setup>
 import SharedErrors from "@/javascript/admin/views/shared/_errors.vue";
-import router from "../../routes";
 import { ClientStore } from "../../stores/client";
-import { messages, urls } from "../../../const/const";
+import { messages } from "../../../const/const";
 
 const interfaceStrings = messages.interfaceStrings;
-const interfaceValues = messages.interfaceValues;
 const store = ClientStore();
 
 const initApi = function () {
   store.initApi(store.client.id).then(resolve => {
     alert(messages.clients.initApi.success);
-    router.push(`/${urls.clients.prefix}/` + store.client.id);
+    window.location.reload();
   }).catch(reject => {
     alert(messages.errorOccured);
   });

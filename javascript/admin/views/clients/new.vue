@@ -2,7 +2,7 @@
   <div class="responsive max">
     <nav-top></nav-top>
 
-    <div class="clients">
+    <div class="main_container">
       <div class="s12 l6">
         <ul class="breadcrumb pull-left">
           <li>
@@ -15,12 +15,12 @@
         </ul>
       </div>
 
+      <form @submit.prevent="create" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
       <div class="s12 l6">
-        <form @submit.prevent="create" accept-charset="UTF-8" class="form styled-form" :class="store.progress">
           <ClientForm />
-          <button>{{ $t('save') }}</button>
+          <button class="btn bottom new-btn">{{ $t('save') }}</button>
+          </div>
         </form>
-      </div>
     </div>
 
     <footer-custom></footer-custom>

@@ -43,6 +43,7 @@ const location = useRoute();
 const update = function () {
   store.update().then(resolve => {
     alert(clientMessages.update.success);
+    window.location.reload();
   }).catch(reject => {
     alert(messages.errorOccured);
   });

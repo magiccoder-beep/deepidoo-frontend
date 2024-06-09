@@ -13,7 +13,7 @@ export const ContactStore = defineStore('contact', {
       contact: {},
       contacttables: [],
       contacts: [],
-      phone: null,
+      phone: {},
       client: '',
     }
   },
@@ -37,6 +37,7 @@ export const ContactStore = defineStore('contact', {
     },
 
     async initPhone(element) {
+      console.log(element);
       this.phone = window.intlTelInput(element, {
         preferredCountries: ["fr", "us", "ca", "de"],
         separateDialCode: true,
